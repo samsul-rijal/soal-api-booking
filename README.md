@@ -36,7 +36,27 @@
     }
     ```
 
-#### 2. Get a specific customer by ID
+#### 2. Get all customer
+- **Method**: `GET`
+- **Endpoint**: `/customers`
+- **Response**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Customer retrieved successfully",
+      "data": [
+        {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "phone": "123456789",
+            "address": "Depok"
+
+        }
+      ]
+    }
+
+#### 3. Get a specific customer by ID
 - **Method**: `GET`
 - **Endpoint**: `/customers/:id`
 - **Response**:
@@ -49,12 +69,28 @@
         "name": "John Doe",
         "email": "john@example.com",
         "phone": "123456789",
-        "address": "Depok"
+        "address": "Depok",
+        "data": [
+            {
+                "id": 1,
+                "date": "2024-10-15",
+                "time": "14:00",
+                "status": "complete",
+                "quantity": 2,
+                "totalPrice": 300000,
+                "service": {
+                    "id": 1,
+                    "name": "Cat Grooming",
+                    "description": "Full grooming service",
+                    "price": 150000
+                }
+            }
+        ]
       }
     }
     ```
 
-#### 3. Update a specific customer's information
+#### 4. Update a specific customer's information
 - **Method**: `PATCH`
 - **Endpoint**: `/customers/:id`
 - **Request Body**:
@@ -79,7 +115,7 @@
     }
     ```
 
-#### 4. Delete a specific customer
+#### 5. Delete a specific customer
 - **Method**: `DELETE`
 - **Endpoint**: `/customers/:id`
 - **Response**:
@@ -110,6 +146,23 @@
     {
       "statusCode": 201,
       "message": "Service created successfully",
+      "data": {
+        "id": 1,
+        "name": "Cat Grooming",
+        "description": "Full grooming service",
+        "price": 150000
+      }
+    }
+    ```
+
+#### 2. Get a specific service by ID
+- **Method**: `GET`
+- **Endpoint**: `/services/:id`
+- **Response**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Service retrieved successfully",
       "data": {
         "id": 1,
         "name": "Cat Grooming",
@@ -208,6 +261,7 @@ Berikut adalah alur status yang digunakan:
       "customerId": 1,
       "serviceId": 1,
       "date": "2024-10-15",
+      "time": "14:00",
       "quantity": 2
     }
     ```
@@ -217,7 +271,7 @@ Berikut adalah alur status yang digunakan:
       "statusCode": 201,
       "message": "Booking created successfully",
       "data": {
-        "bookingId": 1,
+        "id": 1,
         "customerId": 1,
         "serviceId": 1,
         "date": "2024-10-15",
@@ -229,7 +283,42 @@ Berikut adalah alur status yang digunakan:
     }
     ```
 
-#### 2. Get a specific booking by ID
+#### 2. Get all booking
+- **Method**: `GET`
+- **Endpoint**: `/bookings`
+- **Response**:
+    ```json
+    {
+      "statusCode": 200,
+      "message": "Booking retrieved successfully",
+      "data": [
+        {
+            "id": 1,
+            "date": "2024-10-15",
+            "time": "14:00",
+            "status": "complete",
+            "quantity": 2,
+            "totalPrice": 300000,
+            "customer": {
+                "id": 1,
+                "name": "John Doe",
+                "email": "john@example.com",
+                "phone": "123456789",
+                "address": "Depok"
+            },
+            "service": {
+                "id": 1,
+                "name": "Cat Grooming",
+                "description": "Full grooming service",
+                "price": 150000
+            }
+        }
+      ]
+    }
+    ```
+
+
+#### 3. Get a specific booking by ID
 - **Method**: `GET`
 - **Endpoint**: `/bookings/:id`
 - **Response**:
@@ -238,25 +327,36 @@ Berikut adalah alur status yang digunakan:
       "statusCode": 200,
       "message": "Booking retrieved successfully",
       "data": {
-        "bookingId": 1,
-        "customerId": 1,
-        "serviceId": 1,
+        "id": 1,
         "date": "2024-10-15",
         "time": "14:00",
         "status": "complete",
         "quantity": 2,
-        "totalPrice": 300000
+        "totalPrice": 300000,
+        "customer": {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com",
+            "phone": "123456789",
+            "address": "Depok"
+        },
+        "service": {
+            "id": 1,
+            "name": "Cat Grooming",
+            "description": "Full grooming service",
+            "price": 150000
+        }
       }
     }
     ```
 
-#### 3. Update a specific booking's information
+#### 4. Update a specific booking's information
 - **Method**: `PATCH`
 - **Endpoint**: `/bookings/:id`
 - **Request Body**:
     ```json
     {
-      "status": "complete",
+      "status": "ongoing",
       "quantity": 3,
       "totalPrice": 450000
     }
@@ -267,19 +367,19 @@ Berikut adalah alur status yang digunakan:
       "statusCode": 200,
       "message": "Booking updated successfully",
       "data": {
-        "bookingId": 1,
-        "customerId": 1,
-        "serviceId": 1,
+        "id": 1,
         "date": "2024-10-15",
         "time": "14:00",
-        "status": "complete",
+        "status": "ongoing",
         "quantity": 3,
-        "totalPrice": 450000
+        "totalPrice": 450000,
+        "customerId": 1,
+        "serviceId": 1
       }
     }
     ```
 
-#### 4. Delete a specific booking
+#### 5. Delete a specific booking
 - **Method**: `DELETE`
 - **Endpoint**: `/bookings/:id`
 - **Response**:
