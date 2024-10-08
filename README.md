@@ -1,24 +1,26 @@
 ## API Booking Project Task
 
 ### Service List
-- Customer
+- User
 - Service
 - Booking
+- Transactions
 
 ---
 
-### Customer
+### User
 
-#### 1. Create a new customer
+#### 1. Create a new user
 - **Method**: `POST`
-- **Endpoint**: `/customers`
+- **Endpoint**: `/register`
 - **Request Body**:
     ```json
     {
       "name": "John Doe",
       "email": "john@example.com",
+      "password": "password1234",
       "phone": "123456789",
-      "address": "Depok"
+      "address": "Depok",
     }
     ```
 - **Response**:
@@ -30,47 +32,55 @@
         "id": 1,
         "name": "John Doe",
         "email": "john@example.com",
+        "password": "password1234",
         "phone": "123456789",
-        "address": "Depok"
+        "address": "Depok",
+        "role": "customer"
       }
     }
     ```
 
-#### 2. Get all customer
+#### role
+- customer
+- karyawan
+- owner
+
+#### 2. Get all user
 - **Method**: `GET`
-- **Endpoint**: `/customers`
+- **Endpoint**: `/users`
 - **Response**:
     ```json
     {
       "statusCode": 200,
-      "message": "Customer retrieved successfully",
+      "message": "User get successfully",
       "data": [
         {
             "id": 1,
             "name": "John Doe",
             "email": "john@example.com",
             "phone": "123456789",
-            "address": "Depok"
-
+            "address": "Depok",
+            "role": "customer"
         }
       ]
     }
 
-#### 3. Get a specific customer by ID
+#### 3. Get a specific users by ID
 - **Method**: `GET`
-- **Endpoint**: `/customers/:id`
+- **Endpoint**: `/users/:id`
 - **Response**:
     ```json
     {
       "statusCode": 200,
-      "message": "Customer retrieved successfully",
+      "message": "Users get successfully",
       "data": {
         "id": 1,
         "name": "John Doe",
         "email": "john@example.com",
         "phone": "123456789",
         "address": "Depok",
-        "data": [
+        "role": "customer",
+        "booking": [
             {
                 "id": 1,
                 "date": "2024-10-15",
@@ -92,7 +102,7 @@
 
 #### 4. Update a specific customer's information
 - **Method**: `PATCH`
-- **Endpoint**: `/customers/:id`
+- **Endpoint**: `/users/:id`
 - **Request Body**:
     ```json
     {
@@ -104,25 +114,26 @@
     ```json
     {
       "statusCode": 200,
-      "message": "Customer updated successfully",
+      "message": "Users updated successfully",
       "data": {
         "id": 1,
         "name": "John Doe Updated",
         "email": "john_updated@example.com",
         "phone": "123456789",
-        "address": "Depok"
+        "address": "Depok",
+        "role": "customer",
       }
     }
     ```
 
 #### 5. Delete a specific customer
 - **Method**: `DELETE`
-- **Endpoint**: `/customers/:id`
+- **Endpoint**: `/users/:id`
 - **Response**:
     ```json
     {
       "statusCode": 200,
-      "message": "Customer deleted successfully",
+      "message": "Users deleted successfully",
     }
     ```
 
@@ -179,7 +190,7 @@
     ```json
     {
       "statusCode": 200,
-      "message": "Service retrieved successfully",
+      "message": "Service get successfully",
       "data": {
         "id": 1,
         "name": "Cat Grooming",
@@ -258,7 +269,6 @@ Berikut adalah alur status yang digunakan:
 - **Request Body**:
     ```json
     {
-      "customerId": 1,
       "serviceId": 1,
       "date": "2024-10-15",
       "time": "14:00",
@@ -272,7 +282,7 @@ Berikut adalah alur status yang digunakan:
       "message": "Booking created successfully",
       "data": {
         "id": 1,
-        "customerId": 1,
+        "userId": 1,
         "serviceId": 1,
         "date": "2024-10-15",
         "time": "14:00",
@@ -299,7 +309,7 @@ Berikut adalah alur status yang digunakan:
             "status": "complete",
             "quantity": 2,
             "totalPrice": 300000,
-            "customer": {
+            "user": {
                 "id": 1,
                 "name": "John Doe",
                 "email": "john@example.com",
@@ -333,7 +343,7 @@ Berikut adalah alur status yang digunakan:
         "status": "complete",
         "quantity": 2,
         "totalPrice": 300000,
-        "customer": {
+        "user": {
             "id": 1,
             "name": "John Doe",
             "email": "john@example.com",
@@ -373,7 +383,7 @@ Berikut adalah alur status yang digunakan:
         "status": "ongoing",
         "quantity": 3,
         "totalPrice": 450000,
-        "customerId": 1,
+        "userId": 1,
         "serviceId": 1
       }
     }
@@ -387,5 +397,118 @@ Berikut adalah alur status yang digunakan:
     {
       "statusCode": 200,
       "message": "Booking deleted successfully",
+    }
+    ```
+
+
+### Transactions
+#### 1. Create a new transactions
+- **Method**: `POST`
+- **Endpoint**: `/transactions`
+- **Request Body**:
+    ```json
+    {
+      "bookingId": 1,
+      "payment": "cash",
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "statusCode": 201,
+      "message": "Booking created successfully",
+      "payment": "cash",
+      "total": 450000,
+      "booking": {
+        "id": 1,
+        "date": "2024-10-15",
+        "status": "success",
+        "quantity": 3,
+        "totalPrice": 450000,
+        "user": {
+          "id": 1,
+          "name": "John Doe",
+          "email": "john@example.com",
+          "phone": "123456789",
+          "address": "Depok"
+        },
+        "service": {
+          "id": 1,
+          "name": "Cat Grooming",
+          "description": "Full grooming service",
+          "price": 150000
+        }
+      }
+    }
+    ```
+
+#### 2. Get all transactions
+- **Method**: `GET`
+- **Endpoint**: `/transactions`
+- **Response**:
+    ```json
+    {
+      "data": [
+        {
+          "statusCode": 200,
+          "message": "Booking get successfully",
+          "payment": "cash",
+          "total": 450000,
+          "booking": {
+            "id": 1,
+            "date": "2024-10-15",
+            "status": "success",
+            "quantity": 3,
+            "totalPrice": 450000,
+            "user": {
+              "id": 1,
+              "name": "John Doe",
+              "email": "john@example.com",
+              "phone": "123456789",
+              "address": "Depok"
+            },
+            "service": {
+              "id": 1,
+              "name": "Cat Grooming",
+              "description": "Full grooming service",
+              "price": 150000
+            }
+          }
+        }
+      ]
+    }
+    ```
+
+
+#### 3. Get a specific booking by ID
+- **Method**: `GET`
+- **Endpoint**: `/bookings/:id`
+- **Response**:
+    ```json
+    {
+      "statusCode": 201,
+      "message": "Transactions get successfully",
+      "payment": "cash",
+      "total": 450000,
+      "booking": {
+        "id": 1,
+        "date": "2024-10-15",
+        "status": "success",
+        "quantity": 3,
+        "totalPrice": 450000,
+        "user": {
+          "id": 1,
+          "name": "John Doe",
+          "email": "john@example.com",
+          "phone": "123456789",
+          "address": "Depok"
+        },
+        "service": {
+          "id": 1,
+          "name": "Cat Grooming",
+          "description": "Full grooming service",
+          "price": 150000
+        }
+      }
     }
     ```
